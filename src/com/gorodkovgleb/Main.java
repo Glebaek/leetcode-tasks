@@ -1,7 +1,6 @@
 package com.gorodkovgleb;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 class ListNode {
     int val;
@@ -47,6 +46,10 @@ public class Main {
         return fizzBuzzArr;
     }
 
+
+
+
+
     /*
     "Add two numbers" task from LeetCode.
     You are given two non-empty linked lists representing two non-negative integers.
@@ -88,6 +91,9 @@ public class Main {
         return result;
     }
 
+
+
+
     /*
     "Longest Substring Without Repeating Characters" task from LeetCode.
     Given a string s, find the length of the longest
@@ -125,10 +131,60 @@ public class Main {
     }
 
 
+
+
+    /*
+    "Permutations" task from LeetCode.
+    Given an array nums of distinct integers, return all the possible permutations.
+    You can return the answer in any order.
+
+    I perform this task using recursive method and a map of taken elements.
+    */
+
+    public static void recursive(List<List<Integer>> result, List<Integer> temp, int[] nums, boolean[] map, int size) {
+
+        for (int i = 0; i < size; i++) {
+            if(map[i] == false) {
+                temp.add(nums[i]);
+                map[i] = true;
+                recursive(result, temp, nums, map, size);
+                map[i] = false;
+            }
+
+        }
+
+        if(temp.size() == size) {
+            List<Integer> copy = new ArrayList<Integer>(temp);
+            result.addAll(Collections.singleton(copy));
+        }
+
+        if(temp.size() != 0)
+            temp.remove(temp.size() - 1);
+    }
+
+    public static List<List<Integer>> permute(int[] nums) {
+
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> temp = new ArrayList<Integer>();
+
+        int size = nums.length;
+        boolean[] map = new boolean[size];
+
+        recursive(result, temp, nums, map, size);
+
+        return result;
+    }
+
+
     public static void main(String[] args) {
 
         String str = "jklmnopoopwekkewaeprogjhaslfkpsj";
+        int[] nums = {4, 1, 2};
+        List<List<Integer>> test = new ArrayList<List<Integer>>();
 
+
+
+        test = permute(nums);
         System.out.println(qLengthOfLongestSubstring(str));
 
     }
