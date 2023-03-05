@@ -1,5 +1,7 @@
 package com.gorodkovgleb;
 
+import com.sun.source.tree.Tree;
+
 import java.util.*;
 
 class ListNode {
@@ -10,7 +12,28 @@ class ListNode {
     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 }
 
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() { }
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+
+}
+
 public class Main {
+
+    static int maxDepth = 0;
 
     /*
     "FizzBuzz" task from LeetCode.
@@ -141,13 +164,13 @@ public class Main {
     I perform this task using recursive method and a map of taken elements.
     */
 
-    public static void recursive(List<List<Integer>> result, List<Integer> temp, int[] nums, boolean[] map, int size) {
+    public static void recursiveList(List<List<Integer>> result, List<Integer> temp, int[] nums, boolean[] map, int size) {
 
         for (int i = 0; i < size; i++) {
             if(map[i] == false) {
                 temp.add(nums[i]);
                 map[i] = true;
-                recursive(result, temp, nums, map, size);
+                recursiveList(result, temp, nums, map, size);
                 map[i] = false;
             }
 
@@ -170,10 +193,51 @@ public class Main {
         int size = nums.length;
         boolean[] map = new boolean[size];
 
-        recursive(result, temp, nums, map, size);
+        recursiveList(result, temp, nums, map, size);
 
         return result;
     }
+
+
+
+    /*
+    "Maximum depth of binary tree" task from LeetCode.
+    Given the root of a binary tree, return its maximum depth.
+    A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+    */
+
+    public static int recursiveDepth(TreeNode node, int depth) {
+
+        depth++;
+
+        if(maxDepth < depth)
+            maxDepth = depth;
+
+        if (node.right != null)
+            recursiveDepth(node.right, depth);
+
+
+        if (node.left != null)
+            recursiveDepth(node.left, depth);
+
+
+        return maxDepth;
+    }
+
+    public static int maxDepth(TreeNode root) {
+
+        if(root == null)
+            return 0;
+
+        int depth = 0;
+
+        depth = recursiveDepth(root, depth);
+        maxDepth = 0;
+
+
+        return depth;
+    }
+
 
 
     public static void main(String[] args) {
@@ -182,10 +246,15 @@ public class Main {
         int[] nums = {4, 1, 2};
         List<List<Integer>> test = new ArrayList<List<Integer>>();
 
+        TreeNode example = new TreeNode(1, new TreeNode(2), new TreeNode(3));
+        example.right.right = new TreeNode(4);
+
+        int maxDepth = maxDepth(example);
 
 
-        test = permute(nums);
-        System.out.println(qLengthOfLongestSubstring(str));
+        System.out.println(maxDepth);
+        //test = permute(nums);
+        //System.out.println(qLengthOfLongestSubstring(str));
 
     }
 }
